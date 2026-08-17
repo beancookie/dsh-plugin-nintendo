@@ -55,6 +55,8 @@ if (!panel) throw new Error('panel missing')
 if (panel.style.display === 'none') throw new Error('shortcut did not reopen the popup')
 if (document.querySelectorAll('[data-dsh-nintendo-btn]').length !== 8) throw new Error('toolbar buttons missing')
 if (!query('[data-dsh-nintendo-shortcut]')?.textContent?.includes('Ctrl+Alt+N')) throw new Error('shortcut label missing')
+const hints = query('[data-dsh-nintendo-hints]')
+if (!hints?.textContent?.includes('P2') || !hints.textContent.includes('WASD')) throw new Error('P2 hints missing')
 
 panel.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }))
 const escRoot = query('[data-dsh-nintendo-root]')

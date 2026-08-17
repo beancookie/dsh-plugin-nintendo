@@ -27,7 +27,8 @@ const CSS = `
 [data-dsh-nintendo-btn]:disabled { opacity: .45; cursor: default; }
 [data-dsh-nintendo-status] { padding: 8px 16px 4px; text-align: center; color: var(--dsw-alias-label-secondary, #9aa1b0); font-size: 12px; }
 [data-dsh-nintendo-footer] { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 10px 16px 12px; border-top: 1px solid var(--dsw-alias-border-l1, rgba(255,255,255,.08)); color: var(--dsw-alias-label-secondary, #8f96a3); font-size: 11px; }
-[data-dsh-nintendo-hints] { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+[data-dsh-nintendo-hints] { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+[data-dsh-nintendo-p1], [data-dsh-nintendo-p2] { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
 [data-dsh-nintendo-hints] b { color: var(--dsw-alias-label-primary, #f5f7fb); font-weight: 650; }
 [data-dsh-nintendo-hints] kbd { padding: 1px 5px; border: 1px solid var(--dsw-alias-border-l1, rgba(255,255,255,.14)); border-radius: 5px; background: rgba(255,255,255,.04); font: inherit; }
 [data-dsh-nintendo-controls] { display: flex; align-items: center; gap: 10px; }
@@ -60,18 +61,18 @@ const MODIFIER_KEYS = new Set(['alt', 'control', 'meta', 'shift'])
 type GameKey = [ControllerId, ButtonKey]
 
 const GAME_KEYS: Record<string, GameKey> = {
-  ArrowUp: [1, Controller.BUTTON_UP],
-  ArrowDown: [1, Controller.BUTTON_DOWN],
-  ArrowLeft: [1, Controller.BUTTON_LEFT],
-  ArrowRight: [1, Controller.BUTTON_RIGHT],
+  KeyW: [1, Controller.BUTTON_UP],
+  KeyS: [1, Controller.BUTTON_DOWN],
+  KeyA: [1, Controller.BUTTON_LEFT],
+  KeyD: [1, Controller.BUTTON_RIGHT],
   KeyX: [1, Controller.BUTTON_A],
   KeyZ: [1, Controller.BUTTON_B],
   Enter: [1, Controller.BUTTON_START],
   ControlRight: [1, Controller.BUTTON_SELECT],
-  KeyW: [2, Controller.BUTTON_UP],
-  KeyS: [2, Controller.BUTTON_DOWN],
-  KeyA: [2, Controller.BUTTON_LEFT],
-  KeyD: [2, Controller.BUTTON_RIGHT],
+  ArrowUp: [2, Controller.BUTTON_UP],
+  ArrowDown: [2, Controller.BUTTON_DOWN],
+  ArrowLeft: [2, Controller.BUTTON_LEFT],
+  ArrowRight: [2, Controller.BUTTON_RIGHT],
   Digit1: [2, Controller.BUTTON_A],
   Digit2: [2, Controller.BUTTON_B],
   Digit3: [2, Controller.BUTTON_START],
@@ -565,7 +566,7 @@ function mountNintendo(document: Document, window: Window): () => void {
     footer.setAttribute('data-dsh-nintendo-footer', '')
     const hints = document.createElement('span')
     hints.setAttribute('data-dsh-nintendo-hints', '')
-    hints.innerHTML = '<span><b>P1</b> <kbd>↑↓←→</kbd> 移动</span><span><kbd>X</kbd> A</span><span><kbd>Z</kbd> B</span><span><kbd>Enter</kbd> Start</span><span><kbd>右 Ctrl</kbd> Select</span><span><b>P2</b> <kbd>WASD</kbd> 移动</span><span><kbd>1</kbd> A</span><span><kbd>2</kbd> B</span><span><kbd>3</kbd> Start</span><span><kbd>4</kbd> Select</span>'
+    hints.innerHTML = '<span data-dsh-nintendo-p1><b>P1</b> <kbd>WASD</kbd> 移动</span><span><kbd>X</kbd> A</span><span><kbd>Z</kbd> B</span><span><kbd>Enter</kbd> Start</span><span><kbd>右 Ctrl</kbd> Select</span><span data-dsh-nintendo-p2><b>P2</b> <kbd>↑↓←→</kbd> 移动</span><span><kbd>1</kbd> A</span><span><kbd>2</kbd> B</span><span><kbd>3</kbd> Start</span><span><kbd>4</kbd> Select</span>'
     const controls = document.createElement('span')
     controls.setAttribute('data-dsh-nintendo-controls', '')
     const shortcutBtn = document.createElement('button')

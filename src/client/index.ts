@@ -81,6 +81,7 @@ interface NintendoState {
   resizeHandler?: () => void
   statusInitialized: boolean
   library?: HTMLElement
+  hidden: boolean
 }
 
 function normalizedKey(key: string): string {
@@ -153,6 +154,7 @@ function mountNintendo(document: Document, window: Window): () => void {
     shortcut: DEFAULT_SHORTCUT,
     recording: false,
     statusInitialized: false,
+    hidden: false,
   }
 
   let ownsStyle = false
@@ -309,6 +311,16 @@ function mountNintendo(document: Document, window: Window): () => void {
     }
   }
 
+  const hide = (): void => {
+    state.recording = false
+    state.hidden = true
+    closeLibrary()
+    if (state.browser) state.browser.stop()
+    if (state.root) state.root.style.display = 'none'
+    if (state.previousFocus?.isConnected === true) state.previousFocus.focus({ preventScroll: true })
+    state.previousFocus = undefined
+  }
+
   const close = (): void => {
     state.recording = false
     if (state.resizeHandler) {
@@ -318,6 +330,7 @@ function mountNintendo(document: Document, window: Window): () => void {
     destroyBrowser()
     state.root?.remove()
     state.root = undefined
+    state.hidden = false
     state.library = undefined
     if (state.previousFocus?.isConnected === true) state.previousFocus.focus({ preventScroll: true })
     state.previousFocus = undefined
@@ -426,7 +439,15 @@ function mountNintendo(document: Document, window: Window): () => void {
   }
 
   const open = (): void => {
-    if (state.root !== undefined) return
+    if (state.root !== undefined) {
+      if (state.hidden) {
+        state.hidden = false
+        state.root.style.display = ''
+        state.previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : undefined
+        if (state.browser && !state.paused) state.browser.start()
+      }
+      return
+    }
     document.querySelector<HTMLElement>(`[${ROOT_ATTR}]`)?.remove()
     state.previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : undefined
 
@@ -450,9 +471,9 @@ function mountNintendo(document: Document, window: Window): () => void {
     const closeBtn = document.createElement('button')
     closeBtn.type = 'button'
     closeBtn.setAttribute('data-dsh-nintendo-close', '')
-    closeBtn.setAttribute('aria-label', '关闭')
+    closeBtn.setAttribute('aria-label', '隐藏')
     closeBtn.textContent = '✕'
-    closeBtn.addEventListener('click', close)
+    closeBtn.addEventListener('click', hide)
     header.append(title, romEl, closeBtn)
 
     const screen = document.createElement('div')
@@ -554,7 +575,7 @@ function mountNintendo(document: Document, window: Window): () => void {
         event.preventDefault()
         event.stopPropagation()
         if (state.library) closeLibrary()
-        else close()
+        else hide()
       }
     })
 
@@ -581,7 +602,7 @@ function mountNintendo(document: Document, window: Window): () => void {
     overlay.addEventListener('drop', onDrop)
 
     overlay.addEventListener('mousedown', (event) => {
-      if (event.target === overlay) close()
+      if (event.target === overlay) hide()
     })
 
     const onResize = (): void => {
@@ -641,11 +662,11 @@ function mountNintendo(document: Document, window: Window): () => void {
       }
       if (!rom || updatedAt === state.lastUpdatedAt) return
       state.lastUpdatedAt = updatedAt
-      if (!autoOpenEnabled && state.root === undefined) return
+      if (!autoOpenEnabled && (state.root === undefined || state.hidden)) return
       const romRes = await fetch('/nes/rom')
       if (!romRes.ok) return
       const bytes = new Uint8Array(await romRes.arrayBuffer())
-      if (state.root === undefined) {
+      if (state.root === undefined || state.hidden) {
         state.lastRomBytes = undefined
         state.lastRomName = undefined
         open()
@@ -665,8 +686,8 @@ function mountNintendo(document: Document, window: Window): () => void {
     if (!isShortcutMatch(event, state.shortcut)) return
     event.preventDefault()
     event.stopPropagation()
-    if (state.root === undefined) open()
-    else close()
+    if (state.root === undefined || state.hidden) open()
+    else hide()
   }
   window.addEventListener('keydown', onGlobalShortcut, true)
 

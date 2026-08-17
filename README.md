@@ -1,13 +1,13 @@
 # dsh-plugin-nintendo
 
-一个 DeepSeek Harness (DSH) Web 插件：基于 [jsnes](https://github.com/bfirsh/jsnes) 的 NES 模拟器，通过一个**独立的弹窗页面**运行游戏，支持**快捷键打开/关闭**，也支持 Agent 通过 `nes_play` 工具直接加载 ROM。
+一个 DeepSeek Harness (DSH) Web 插件：基于 [jsnes](https://github.com/bfirsh/jsnes) 的 NES 模拟器，通过一个**独立的弹窗页面**运行游戏，支持**快捷键打开/隐藏**，也支持 Agent 通过 `nes_play` 工具直接加载 ROM。
 
 ![演示截图](images/demo.png)
 
 ## 功能
 
 - 🕹️ **独立弹窗页面**：DSH Web 页内全屏遮罩弹窗（类似命令面板），`role=dialog`，含游戏画面、工具栏与操作提示
-- ⌨️ **快捷键开关**：默认 `Ctrl+Alt+N` 打开/关闭弹窗；弹窗底部可录制自定义快捷键或恢复默认（存浏览器 localStorage）
+- ⌨️ **快捷键开关**：默认 `Ctrl+Alt+N` 打开/隐藏弹窗；弹窗底部可录制自定义快捷键或恢复默认（存浏览器 localStorage）。隐藏即**暂停并隐藏**，模拟器实例保留，再打开从中断处继续，进度不丢
 - 🎮 **jsnes 全功能模拟**：画面、音频、键盘、手柄、帧率全部由 `jsnes.Browser` 处理
 - 📂 **四种 ROM 加载方式**：
   1. 弹窗内「🎮 游戏库」：列出插件 `roms/` 目录（或配置的 `romsDir`）下的游戏，点击即玩
@@ -27,7 +27,7 @@
 | `Enter` | Start |
 | 右 `Ctrl` | Select |
 | `S` / `A` | Turbo A / B |
-| `Ctrl+Alt+N` | 打开 / 关闭弹窗 |
+| `Ctrl+Alt+N` | 打开 / 隐藏弹窗（暂停并保留进度） |
 
 手柄（Gamepad）自动支持。
 
@@ -97,7 +97,7 @@ DSH 设置中可配置：
 ```
 
 - **Host 半部**（`src/index.ts`）：注册 `nes_play` 工具与 `/nes/*` 路由，`Config` 经 `@deepseek-ai/schemastery` 校验
-- **Client 半部**（`src/client/index.ts`）：`tsdown` 打包为 `window.__ModuleLoader__.load({ id, factory })` 格式，jsnes 经 `deps.alwaysBundle` 内联进 bundle（client 模块表不含 jsnes，不能 `require`）；弹窗为纯 DOM 实现（无需 React），按下快捷键即 open()/close()
+- **Client 半部**（`src/client/index.ts`）：`tsdown` 打包为 `window.__ModuleLoader__.load({ id, factory })` 格式，jsnes 经 `deps.alwaysBundle` 内联进 bundle（client 模块表不含 jsnes，不能 `require`）；弹窗为纯 DOM 实现（无需 React），按下快捷键即 open()/hide()（隐藏时暂停模拟并保留实例）
 
 ## 开发
 

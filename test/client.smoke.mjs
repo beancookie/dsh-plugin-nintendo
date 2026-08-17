@@ -46,16 +46,19 @@ window.dispatchEvent(toggle())
 if (!query('[data-dsh-nintendo-root]')) throw new Error('shortcut did not open the popup')
 
 window.dispatchEvent(toggle())
-if (query('[data-dsh-nintendo-root]')) throw new Error('shortcut did not close the popup')
+const hiddenRoot = query('[data-dsh-nintendo-root]')
+if (!hiddenRoot || hiddenRoot.style.display !== 'none') throw new Error('shortcut did not hide the popup')
 
 window.dispatchEvent(toggle())
 const panel = query('[data-dsh-nintendo-panel]')
 if (!panel) throw new Error('panel missing')
+if (panel.style.display === 'none') throw new Error('shortcut did not reopen the popup')
 if (document.querySelectorAll('[data-dsh-nintendo-btn]').length !== 8) throw new Error('toolbar buttons missing')
 if (!query('[data-dsh-nintendo-shortcut]')?.textContent?.includes('Ctrl+Alt+N')) throw new Error('shortcut label missing')
 
 panel.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }))
-if (query('[data-dsh-nintendo-root]')) throw new Error('Escape did not close the popup')
+const escRoot = query('[data-dsh-nintendo-root]')
+if (!escRoot || escRoot.style.display !== 'none') throw new Error('Escape did not hide the popup')
 
 cleanup()
 if (query('[data-dsh-nintendo-root]')) throw new Error('dispose left the overlay behind')

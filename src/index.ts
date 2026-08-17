@@ -177,7 +177,7 @@ export function apply(ctx: Context, config: Config): void {
 
   ctx.tools.register(defineTool({
     name: 'nes_play',
-    description: '在 NES 模拟器弹窗中加载并运行一个 NES ROM 文件（.nes / .unf）。可传绝对路径，或在插件 roms 目录内的文件名（如 nes_play("Contra (USA).nes")）。会弹出模拟器页面，也可用 Ctrl+Alt+N 手动打开或关闭。',
+    description: '在 NES 模拟器弹窗中加载并运行一个 NES ROM 文件（.nes / .unf）。可传绝对路径，或在插件 roms 目录内的文件名（如 nes_play("Contra (USA).nes")）。会弹出模拟器页面，也可用 Ctrl+Alt+N 手动打开或隐藏。',
     parameters: {
       path: { type: 'string', required: true, description: 'NES ROM 文件的绝对路径，或 roms 目录中的文件名' },
     },
@@ -207,7 +207,7 @@ export function apply(ctx: Context, config: Config): void {
         throw new Error(`ROM 大小 ${st.size} 字节超过上限 ${maxRomBytes} 字节`)
       }
       current = { path: target, name: path.basename(target), size: st.size, updatedAt: Date.now() }
-      return `已加载 ROM "${current.name}"（${st.size} 字节）。模拟器弹窗即将打开，按 Ctrl+Alt+N 可手动开关。`
+      return `已加载 ROM "${current.name}"（${st.size} 字节）。模拟器弹窗即将打开，按 Ctrl+Alt+N 可手动开关（关闭仅暂停并隐藏，进度保留）。`
     },
   }))
 }

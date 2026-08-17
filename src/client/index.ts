@@ -28,7 +28,7 @@ const CSS = `
 [data-dsh-nintendo-status] { padding: 8px 16px 4px; text-align: center; color: var(--dsw-alias-label-secondary, #9aa1b0); font-size: 12px; }
 [data-dsh-nintendo-footer] { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 10px 16px 12px; border-top: 1px solid var(--dsw-alias-border-l1, rgba(255,255,255,.08)); color: var(--dsw-alias-label-secondary, #8f96a3); font-size: 11px; }
 [data-dsh-nintendo-hints] { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
-[data-dsh-nintendo-p1], [data-dsh-nintendo-p2] { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+[data-dsh-nintendo-p1], [data-dsh-nintendo-p2] { display: flex; flex-wrap: nowrap; gap: 6px 14px; align-items: center; white-space: nowrap; }
 [data-dsh-nintendo-hints] b { color: var(--dsw-alias-label-primary, #f5f7fb); font-weight: 650; }
 [data-dsh-nintendo-hints] kbd { padding: 1px 5px; border: 1px solid var(--dsw-alias-border-l1, rgba(255,255,255,.14)); border-radius: 5px; background: rgba(255,255,255,.04); font: inherit; }
 [data-dsh-nintendo-controls] { display: flex; align-items: center; gap: 10px; }

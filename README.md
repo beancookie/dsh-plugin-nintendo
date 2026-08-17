@@ -2,6 +2,8 @@
 
 一个 DeepSeek Harness (DSH) Web 插件：基于 [jsnes](https://github.com/bfirsh/jsnes) 的 NES 模拟器，通过一个**独立的弹窗页面**运行游戏，支持**快捷键打开/关闭**，也支持 Agent 通过 `nes_play` 工具直接加载 ROM。
 
+![演示截图](images/demo.png)
+
 ## 功能
 
 - 🕹️ **独立弹窗页面**：DSH Web 页内全屏遮罩弹窗（类似命令面板），`role=dialog`，含游戏画面、工具栏与操作提示

@@ -39,6 +39,8 @@ dsh plugin --profile web add github:beancookie/dsh-plugin-nintendo
 
 安装完成后重启 DSH Web 并刷新页面，按 `Ctrl+Alt+N` 即可打开模拟器。
 
+> 插件自带预编译产物（`lib/` 随仓库提交），git 安装无需构建脚本，装完即用。
+
 ### 卸载
 
 ```sh
@@ -106,6 +108,8 @@ pnpm install
 pnpm build      # host: tsc -> lib/index.js；client: tsdown -> lib/client.js
 pnpm typecheck
 ```
+
+> `lib/` 已纳入版本控制：`pnpm install` 不再自动构建，改动 `src/` 后需手动 `pnpm build` 并将 `lib/` 一并提交，以保证 git 安装用户拿到的是最新编译产物。
 
 本地加载（`--patch` 开发模式）：
 

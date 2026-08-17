@@ -15,8 +15,8 @@
     "cordis.patch.yml"
   ],
   "scripts": {
-    "prepare": "pnpm build",
     "build": "tsc -p tsconfig.json && tsdown",
+    "prepublishOnly": "pnpm build",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.client.json --noEmit",
     "test": "node test/client.smoke.mjs && node test/host.smoke.mjs"
   },
